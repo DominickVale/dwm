@@ -27,6 +27,12 @@ static char normfgcolor[]           = "#bbbbbb";
 static char selfgcolor[]            = "#eeeeee";
 static char selbordercolor[]        = "#770000";
 static char selbgcolor[]            = "#005577";
+static const char dmenufont[]       = "monospace:size=10";
+static const char col_gray1[]       = "#222222";
+static const char col_gray2[]       = "#444444";
+static const char col_gray3[]       = "#bbbbbb";
+static const char col_gray4[]       = "#eeeeee";
+static const char col_cyan[]        = "#005577";
 static char *colors[][3] = {
        /*               fg           bg           border   */
        [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
@@ -108,6 +114,8 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
+static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { TERMINAL, NULL };
 
 /*
@@ -339,3 +347,20 @@ static Button buttons[] = {
 	{ ClkRootWin,		0,		Button2,	togglebar,	{0} },
 };
 
+static const char *ipcsockpath = "/tmp/dwm.sock";
+static IPCCommand ipccommands[] = {
+  IPCCOMMAND(  view,                1,      {ARG_TYPE_UINT}   ),
+  IPCCOMMAND(  toggleview,          1,      {ARG_TYPE_UINT}   ),
+  IPCCOMMAND(  tag,                 1,      {ARG_TYPE_UINT}   ),
+  IPCCOMMAND(  toggletag,           1,      {ARG_TYPE_UINT}   ),
+  IPCCOMMAND(  tagmon,              1,      {ARG_TYPE_UINT}   ),
+  IPCCOMMAND(  focusmon,            1,      {ARG_TYPE_SINT}   ),
+  IPCCOMMAND(  focusstack,          1,      {ARG_TYPE_SINT}   ),
+  IPCCOMMAND(  zoom,                1,      {ARG_TYPE_NONE}   ),
+  IPCCOMMAND(  incnmaster,          1,      {ARG_TYPE_SINT}   ),
+  IPCCOMMAND(  killclient,          1,      {ARG_TYPE_SINT}   ),
+  IPCCOMMAND(  togglefloating,      1,      {ARG_TYPE_NONE}   ),
+  IPCCOMMAND(  setmfact,            1,      {ARG_TYPE_FLOAT}  ),
+  IPCCOMMAND(  setlayoutsafe,       1,      {ARG_TYPE_PTR}    ),
+  IPCCOMMAND(  quit,                1,      {ARG_TYPE_NONE}   )
+};
