@@ -95,7 +95,7 @@ static const Layout layouts[] = {
 	{ ">M>",	centeredfloatingmaster },	/* Same but master floats */
 
 	{ "><>",	NULL },			/* no layout function means floating behavior */
-	{ NULL,		NULL },
+	{ "",		NULL },
 };
 
 /* key definitions */
@@ -368,3 +368,4 @@ static IPCCommand ipccommands[] = {
   IPCCOMMAND(  setlayoutsafe,       1,      {ARG_TYPE_PTR}    ),
   IPCCOMMAND(  quit,                1,      {ARG_TYPE_NONE}   )
 };
+
