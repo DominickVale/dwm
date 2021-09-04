@@ -15,6 +15,8 @@ static int swallowfloating    = 0;        /* 1 means swallow floating windows by
 static int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
+static const double defaultopacity = 1.0;
+
 static char *fonts[]          = {
 	"monospace:size=10",
 	"JoyPixels:pixelsize=10:antialias=true:autohint=true",
@@ -209,7 +211,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_s,		togglesticky,	{0} },
 	/* { MODKEY|ShiftMask,		XK_s,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_d,		spawn,          SHCMD("dmenu_run") },
-	{ MODKEY|ShiftMask,		XK_d,		spawn,		SHCMD("passmenu") },
+	/* { MODKEY|ShiftMask,		XK_d,		spawn,		SHCMD("passmenu") }, */
 	{ MODKEY,			XK_f,		togglefullscr,	{0} },
 	{ MODKEY|ShiftMask,		XK_f,		setlayout,	{.v = &layouts[8]} },
 	{ MODKEY,			XK_g,		shiftview,	{ .i = -1 } },
@@ -223,6 +225,9 @@ static Key keys[] = {
 	/* { MODKEY|ShiftMask,		XK_apostrophe,	spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_Return,	spawn,		{.v = termcmd } },
 	{ MODKEY|ShiftMask,		XK_Return,	togglescratch,	{.ui = 0} },
+
+	{ MODKEY|ShiftMask,		XK_s,	   spawn,	   SHCMD("transset -a --dec .05") },
+	{ MODKEY|ShiftMask,		XK_d,	   spawn,	   SHCMD("transset -a --inc .05") },
 
 	{ MODKEY,			XK_z,		incrgaps,	{.i = +3 } },
 	/* { MODKEY|ShiftMask,		XK_z,		spawn,		SHCMD("") }, */
@@ -254,7 +259,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_Insert,	spawn,		SHCMD("xdotool type $(grep -v '^#' ~/.local/share/larbs/snippets | dmenu -i -l 50 | cut -d' ' -f1)") },
 
 	{ MODKEY,			XK_F1,		spawn,		SHCMD("groff -mom /usr/local/share/dwm/larbs.mom -Tpdf | zathura -") },
-	{ MODKEY,			XK_F2,		spawn,		SHCMD("tutorialvids") },
+	{ MODKEY,			XK_F2,		spawn,		SHCMD("reloadpolybar; sleep 2 && notify-send \\\"⌨️ Polybar reloaded...\\\" & ") },
 	{ MODKEY,			XK_F3,		spawn,		SHCMD("displayselect") },
 	{ MODKEY,			XK_F4,		spawn,		SHCMD(TERMINAL " -e pulsemixer; kill -44 $(pidof dwmblocks)") },
 	/* { MODKEY,			XK_F5,		xrdb,		{.v = NULL } }, */
