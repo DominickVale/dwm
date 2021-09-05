@@ -3,6 +3,7 @@
 /* Constants */
 #define TERMINAL "st"
 #define TERMCLASS "St"
+#define EMULATOR_MAIN_CNAME "Android Emulator - Main:5554" // main android emulator class name
 
 /* appearance */
 static unsigned int borderpx  = 3;        /* border pixel of windows */
@@ -15,7 +16,7 @@ static int swallowfloating    = 0;        /* 1 means swallow floating windows by
 static int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
-static const double defaultopacity = 1.0;
+static const double defaultopacity = 0.9;
 
 static char *fonts[]          = {
 	"monospace:size=10",
@@ -51,10 +52,12 @@ typedef struct {
 } Sp;
 const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "120x34", NULL };
 const char *spcmd2[] = {TERMINAL, "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
+const char *spcmd3[] = {"emulator", "-avd", "Main"};
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
 	{"spcalc",      spcmd2},
+	{"spemul",      spcmd3},
 };
 
 /* tagging */
@@ -72,8 +75,9 @@ static const Rule rules[] = {
 	{ "Code",  	     NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
 	{ TERMCLASS,  	     NULL,       NULL,       	    0,            0,           1,         0,        -1 },
 	{ NULL,      	     NULL,       "Event Tester",    0,            0,           0,         1,        -1 },
-	{ NULL,      	     "spterm",    NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
-	{ NULL,      	     "spcalc",    NULL,       	    SPTAG(1),     1,           1,         0,        -1 },
+	{ NULL,      	     "spterm",   NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
+	{ NULL,      	     "spcalc",   NULL,       	    SPTAG(1),     1,           1,         0,        -1 },
+	{ NULL,		     NULL, 	EMULATOR_MAIN_CNAME,SPTAG(2),     1,           0,         0,        -1 },
 };
 
 /* layout(s) */
@@ -222,7 +226,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_semicolon,	shiftview,	{ .i = 1 } },
 	{ MODKEY|ShiftMask,		XK_semicolon,	shifttag,	{ .i = 1 } },
 	{ MODKEY,			XK_apostrophe,	togglescratch,	{.ui = 1} },
-	/* { MODKEY|ShiftMask,		XK_apostrophe,	spawn,		SHCMD("") }, */
+	{ MODKEY|ShiftMask,		XK_apostrophe,	togglescratch,	{.ui = 2} },
 	{ MODKEY,			XK_Return,	spawn,		{.v = termcmd } },
 	{ MODKEY|ShiftMask,		XK_Return,	togglescratch,	{.ui = 0} },
 
@@ -250,7 +254,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_Left,	focusmon,	{.i = -1 } },
 	{ MODKEY|ShiftMask,		XK_Left,	tagmon,		{.i = -1 } },
 	{ MODKEY,			XK_Right,	focusmon,	{.i = +1 } },
-	{ MODKEY|ShiftMask,		XK_Right,	tagmon,		{.i = +1 } },
+	{ MODKEY|ShiftMask,		XK_Right,	tagmon,		{.i = +1} },
 
 	{ MODKEY,			XK_Page_Up,	shiftview,	{ .i = -1 } },
 	{ MODKEY|ShiftMask,		XK_Page_Up,	shifttag,	{ .i = -1 } },
