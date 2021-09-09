@@ -230,8 +230,8 @@ static Key keys[] = {
 	{ MODKEY,			XK_Return,	spawn,		{.v = termcmd } },
 	{ MODKEY|ShiftMask,		XK_Return,	togglescratch,	{.ui = 0} },
 
-	{ MODKEY|ShiftMask,		XK_s,	   spawn,	   SHCMD("transset -a --dec .05") },
-	{ MODKEY|ShiftMask,		XK_d,	   spawn,	   SHCMD("transset -a --inc .05") },
+	{ MODKEY|ShiftMask,		XK_s,	   spawn,	   SHCMD("picom-trans -c +5") },
+	{ MODKEY|ShiftMask,		XK_d,	   spawn,	   SHCMD("picom-trans -c -5") },
 
 	{ MODKEY,			XK_z,		incrgaps,	{.i = +3 } },
 	/* { MODKEY|ShiftMask,		XK_z,		spawn,		SHCMD("") }, */
