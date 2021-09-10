@@ -7,4 +7,7 @@ util.o
 dwm
 dwm.o
 drw.o
-.vscode
+build/*
+.vscode/*.log
+.idea
+.cache
