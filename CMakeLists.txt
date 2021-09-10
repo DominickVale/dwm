@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(dwm VERSION 6.2 LANGUAGES C)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 configure_file(config.h.in config.h)
 add_executable(dwm dwm.c drw.c util.c)
 set_target_properties(dwm PROPERTIES C_STANDARD 99)
@@ -12,29 +13,34 @@ else()
   message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 endif()
 
-set(X11INC "/usr/X11R6/include")
-set(X11LIB "/usr/X11R6/lib")
+find_package(X11 REQUIRED COMPONENTS Xft xcb)
+find_package(Xinerama REQUIRED)
+find_package(yajl REQUIRED)
+find_package(Freetype REQUIRED)
+find_package(Fontconfig REQUIRED)
 
-set(XINERAMALIBS "-lXinerama")
-set(XINERAMAFLAGS "-DXINERAMA")
+target_include_directories(dwm PUBLIC "${PROJECT_BINARY_DIR}" "${PROJECT_BINARY_DIR}/cmake")
 
-set(FREETYPELIBS "-lfontconfig -lXft")
-set(FREETYPEINC "/usr/include/freetype2")
-
-set(YAJLLIBS "-lyajl")
-set(YAJLINC "/usr/include/yajl")
-
-set(INCS -I${X11INC} -I${FREETYPEINC} -I${YAJLINC})
-set(LIBS -L${X11LIB} -lX11 ${XINERAMALIBS} ${FREETYPELIBS}
-                        ${YAJLLIBS} -lX11-xcb -lxcb -lxcb-res)
-                      
-target_link_libraries(dwm ${LIBS})
-target_include_directories(dwm PUBLIC "${PROJECT_BINARY_DIR}" ${INCS})
+link_libraries(
+  ${X11_LIBRARIES}
+  ${XINERAMA_LIBRARIES}
+  ${YAJL_LIBRARIES}
+  ${FREETYPE_LIBRARIES}
+  ${FONTCONFIG_LIBRARIES}
+)
+include_directories(
+  ${X11_LIBRARIES}
+  ${XINERAMA_DIRS}
+  ${YAJL_DIRS}
+  ${FREETYPE_DIRS}
+  ${FONTCONFIG_DIRS}
+  "/usr/include/freetype2"
+)
 
 set(CPPFLAGS -D_DEFAULT_SOURCE -D_BSD_SOURCE
                         -D_POSIX_C_SOURCE=200809L
-                        ${XINERAMAFLAGS})
+                        -DXINERAMA)
 
 target_compile_options(dwm PUBLIC -pedantic -Wall
                         -Wno-deprecated-declarations -Os
-                        ${INCS} ${CPPFLAGS})
+                        ${CPPFLAGS})
