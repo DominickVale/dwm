@@ -3,7 +3,7 @@ project(dwm VERSION 6.2 LANGUAGES C)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 configure_file(config.h.in config.h)
-add_executable(dwm dwm.c)
+add_executable(dwm dwm.c drw.c util.c)
 set_target_properties(dwm PROPERTIES C_STANDARD 99)
 
 if(NOT CMAKE_BUILD_TYPE)
