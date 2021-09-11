@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.10)
-project(dwm VERSION 6.2 LANGUAGES C)
-
+cmake_minimum_required(VERSION 3.19)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 set(CMAKE_C_COMPILER "cc")
+project(dwm VERSION 6.2 LANGUAGES C)
+
 configure_file(config.h.in config.h)
 add_executable(dwm drw.c dwm.c util.c)
 set_target_properties(dwm PROPERTIES C_STANDARD 99)
@@ -35,23 +35,35 @@ find_package(X11 REQUIRED COMPONENTS Xinerama Xft xcb)
 #find_package(Libxft REQUIRED)
 find_package(Yajl REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(xcb REQUIRED COMPONENTS xcb res)
 find_package(Fontconfig REQUIRED)
 
 link_libraries(
   ${X11_LIBRARIES}
-  ${YAJL_LIBRARIES}
+  ${XCB_LIBRARIES}
+  ${YAJL_LIBRARY}
   ${FREETYPE_LIBRARY}
   ${Fontconfig_LIBRARIES}
 )
 include_directories(
   ${X11_INCLUDE_DIR}
+  ${XCB_INCLUDE_DIRS}
   ${YAJL_INCLUDE_DIRS}
   ${FREETYPE_INCLUDE_DIRS}
   ${Fontconfig_INCLUDE_DIRS}
 )
+target_link_libraries(
+  dwm
+  ${X11_LIBRARIES}
+  ${YAJL_LIBRARY}
+  ${FREETYPE_LIBRARY}
+  ${Fontconfig_LIBRARIES}
+)
+
 message(STATUS "VARS: \n
   PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}
   X11 libs ${X11_LIBRARIES} dir ${X11_INCLUDE_DIR}\n
+  XCB libs ${XCB_LIBRARIES} dir ${XCB_INCLUDE_DIRS}\n
   yajl libs: ${YAJL_LIBRARY} dirs: ${YAJL_INCLUDE_DIR}, \n
   freetype libs: ${FREETYPE_LIBRARIES} dirs: ${FREETYPE_INCLUDE_DIRS} \n
   Fontconfig libs: ${Fontconfig_LIBRARIES} dirs ${Fontconfig_INCLUDE_DIRS} \n
