@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 project(dwm VERSION 6.2 LANGUAGES C)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+set(CMAKE_C_COMPILER "cc")
 configure_file(config.h.in config.h)
 add_executable(dwm drw.c dwm.c util.c)
 set_target_properties(dwm PROPERTIES C_STANDARD 99)
@@ -13,22 +15,48 @@ else()
   message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 endif()
 
-set(X11INC "/usr/X11R6/include")
-set(X11LIB "/usr/X11R6/lib")
-
-set(XINERAMALIBS "-lXinerama")
-set(XINERAMAFLAGS "-DXINERAMA")
-
-set(FREETYPELIBS "-lfontconfig -lXft")
-set(FREETYPEINC "/usr/include/freetype2")
-
-set(YAJLLIBS "-lyajl")
-set(YAJLINC "/usr/include/yajl")
-
-set(INCS -I${X11INC} -I${FREETYPEINC} -I${YAJLINC})
-set(LIBS -L${X11LIB} -lX11 ${XINERAMALIBS} ${FREETYPELIBS}
-                        ${YAJLLIBS} -lX11-xcb -lxcb -lxcb-res)
+#set(X11INC "/usr/X11R6/include")
+#set(X11LIB "/usr/X11R6/lib")
+#
+#set(XINERAMALIBS "-lXinerama")
+#set(XINERAMAFLAGS "-DXINERAMA")
+#
+#set(FREETYPELIBS "-lfontconfig -lXft")
+#set(FREETYPEINC "/usr/include/freetype2")
+#
+#set(YAJLLIBS "-lyajl")
+#set(YAJLINC "/usr/include/yajl")
+#
+#set(INCS -I${X11INC} -I${FREETYPEINC} -I${YAJLINC})
+#set(LIBS -L${X11LIB} -lX11 ${XINERAMALIBS} ${FREETYPELIBS}
+#                        ${YAJLLIBS} -lX11-xcb -lxcb -lxcb-res)
                       
+find_package(X11 REQUIRED COMPONENTS Xinerama Xft xcb)
+#find_package(Libxft REQUIRED)
+find_package(Yajl REQUIRED)
+find_package(Freetype REQUIRED)
+find_package(Fontconfig REQUIRED)
+
+link_libraries(
+  ${X11_LIBRARIES}
+  ${YAJL_LIBRARIES}
+  ${FREETYPE_LIBRARY}
+  ${Fontconfig_LIBRARIES}
+)
+include_directories(
+  ${X11_INCLUDE_DIR}
+  ${YAJL_INCLUDE_DIRS}
+  ${FREETYPE_INCLUDE_DIRS}
+  ${Fontconfig_INCLUDE_DIRS}
+)
+message(STATUS "VARS: \n
+  PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}
+  X11 libs ${X11_LIBRARIES} dir ${X11_INCLUDE_DIR}\n
+  yajl libs: ${YAJL_LIBRARY} dirs: ${YAJL_INCLUDE_DIR}, \n
+  freetype libs: ${FREETYPE_LIBRARIES} dirs: ${FREETYPE_INCLUDE_DIRS} \n
+  Fontconfig libs: ${Fontconfig_LIBRARIES} dirs ${Fontconfig_INCLUDE_DIRS} \n
+")
+
 target_link_libraries(dwm ${LIBS})
 target_include_directories(dwm PUBLIC "${PROJECT_BINARY_DIR}" ${INCS})
 
@@ -38,4 +66,4 @@ set(CPPFLAGS -D_DEFAULT_SOURCE -D_BSD_SOURCE
 
 target_compile_options(dwm PUBLIC -pedantic -Wall
                         -Wno-deprecated-declarations -Os
-                        ${INCS} ${CPPFLAGS})
+                        ${CPPFLAGS})
