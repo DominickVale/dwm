@@ -32,22 +32,27 @@ endif()
 #                        ${YAJLLIBS} -lX11-xcb -lxcb -lxcb-res)
                       
 find_package(X11 REQUIRED COMPONENTS Xinerama Xft xcb)
-#find_package(Libxft REQUIRED)
 find_package(Yajl REQUIRED)
 find_package(Freetype REQUIRED)
-find_package(xcb REQUIRED COMPONENTS xcb res)
+find_package(Xcb REQUIRED COMPONENTS RES) 
 find_package(Fontconfig REQUIRED)
 
 link_libraries(
   ${X11_LIBRARIES}
-  ${XCB_LIBRARIES}
+  ${X11_Xft_LIB}
+  ${X11_X11_xcb_LIB}
+  ${Xcb_LIBRARIES}
+  ${Xcb_RES_LIBRARIES}
   ${YAJL_LIBRARY}
   ${FREETYPE_LIBRARY}
   ${Fontconfig_LIBRARIES}
 )
 include_directories(
   ${X11_INCLUDE_DIR}
-  ${XCB_INCLUDE_DIRS}
+  ${X11_Xft_INCLUDE_PATH}
+  ${X11_X11_xcb_INCLUDE_PATH}
+  ${Xcb_INCLUDE_DIRS}
+  ${Xcb_RES_INCLUDE_DIRS}
   ${YAJL_INCLUDE_DIRS}
   ${FREETYPE_INCLUDE_DIRS}
   ${Fontconfig_INCLUDE_DIRS}
@@ -55,6 +60,10 @@ include_directories(
 target_link_libraries(
   dwm
   ${X11_LIBRARIES}
+  ${X11_Xft_LIB}
+  ${X11_X11_xcb_LIB}
+  ${Xcb_LIBRARIES}
+  ${Xcb_RES_LIBRARIES}
   ${YAJL_LIBRARY}
   ${FREETYPE_LIBRARY}
   ${Fontconfig_LIBRARIES}
@@ -63,7 +72,10 @@ target_link_libraries(
 message(STATUS "VARS: \n
   PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}
   X11 libs ${X11_LIBRARIES} dir ${X11_INCLUDE_DIR}\n
-  XCB libs ${XCB_LIBRARIES} dir ${XCB_INCLUDE_DIRS}\n
+  X11 Xft lib ${X11_Xft_LIB} dir ${X11_Xft_INCLUDE_PATH}\n
+  X11 xcb lib ${X11_X11_xcb_LIB} dir ${X11_X11_xcb_INCLUDE_PATH}\n
+  XCB libs ${Xcb_LIBRARIES} dir ${Xcb_INCLUDE_DIRS}\n
+  XCB-res libs ${Xcb_RES_LIBRARIES} dir ${Xcb_RES_INCLUDE_DIRS}\n
   yajl libs: ${YAJL_LIBRARY} dirs: ${YAJL_INCLUDE_DIR}, \n
   freetype libs: ${FREETYPE_LIBRARIES} dirs: ${FREETYPE_INCLUDE_DIRS} \n
   Fontconfig libs: ${Fontconfig_LIBRARIES} dirs ${Fontconfig_INCLUDE_DIRS} \n
