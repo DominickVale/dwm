@@ -1,13 +1,11 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.10)
 project(dwm VERSION 6.2 LANGUAGES C)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
-add_executable(dwm dwm.c)
+configure_file(config.h.in config.h)
+add_executable(dwm drw.c dwm.c util.c)
 set_target_properties(dwm PROPERTIES C_STANDARD 99)
 target_include_directories(dwm PUBLIC "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/cmake" "${PROJECT_BINARY_DIR}")
-target_link_libraries(dwm PUBLIC "drw.h")
-configure_file(config.h.in config.h)
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
@@ -15,36 +13,29 @@ else()
   message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 endif()
 
-find_package(X11 REQUIRED COMPONENTS Xinerama Xft xcb)
-find_package(Yajl REQUIRED)
-find_package(Freetype REQUIRED)
-find_package(Fontconfig REQUIRED)
+set(X11INC "/usr/X11R6/include")
+set(X11LIB "/usr/X11R6/lib")
 
-link_libraries(
-  ${X11_LIBRARIES}
-  ${YAJL_LIBRARIES}
-  ${FREETYPE_LIBRARIES}
-  ${Fontconfig_LIBRARIES}
-)
-include_directories(
-  ${X11_INCLUDE_DIR}
-  ${YAJL_INCLUDE_DIRS}
-  ${FREETYPE_INCLUDE_DIRS}
-  ${Fontconfig_INCLUDE_DIRS}
-)
+set(XINERAMALIBS "-lXinerama")
+set(XINERAMAFLAGS "-DXINERAMA")
 
-message(STATUS "VARS: \n
-  PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}
-  X11 libs ${X11_LIBRARIES} dir ${X11_INCLUDE_DIR}\n
-  yajl libs: ${YAJL_LIBRARIES} dirs: ${YAJL_INCLUDE_DIRS}, \n
-  freetype libs: ${FREETYPE_LIBRARIES} dirs: ${FREETYPE_INCLUDE_DIRS} \n
-  Fontconfig libs: ${Fontconfig_LIBRARIES} dirs ${Fontconfig_INCLUDE_DIRS} \n
-")
+set(FREETYPELIBS "-lfontconfig -lXft")
+set(FREETYPEINC "/usr/include/freetype2")
+
+set(YAJLLIBS "-lyajl")
+set(YAJLINC "/usr/include/yajl")
+
+set(INCS -I${X11INC} -I${FREETYPEINC} -I${YAJLINC})
+set(LIBS -L${X11LIB} -lX11 ${XINERAMALIBS} ${FREETYPELIBS}
+                        ${YAJLLIBS} -lX11-xcb -lxcb -lxcb-res)
+                      
+target_link_libraries(dwm ${LIBS})
+target_include_directories(dwm PUBLIC "${PROJECT_BINARY_DIR}" ${INCS})
 
 set(CPPFLAGS -D_DEFAULT_SOURCE -D_BSD_SOURCE
                         -D_POSIX_C_SOURCE=200809L
-                        -DXINERAMA)
+                        ${XINERAMAFLAGS})
 
 target_compile_options(dwm PUBLIC -pedantic -Wall
                         -Wno-deprecated-declarations -Os
-                        ${CPPFLAGS})
+                        ${INCS} ${CPPFLAGS})

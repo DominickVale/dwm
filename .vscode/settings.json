@@ -1,3 +1,12 @@
 {
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "cmake.debugConfig": {
+        "request": "launch",
+        "program": "${command:cmake.launchTargetPath}",
+        "args": [],
+        "cwd": "${workspaceFolder}",
+        "environment": [{"name": "DISPLAY", "value": ":1"}],
+        "miDebuggerPath": "/usr/bin/gdb",
+        "debuggerPath": "/usr/bin/gdb"
+    }
 }
