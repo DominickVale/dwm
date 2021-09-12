@@ -45,7 +45,7 @@ include_directories(
 )
 
 target_link_libraries(dwm ${LIBS})
-target_include_directories(dwm PUBLIC "${PROJECT_BINARY_DIR}" ${INCS})
+target_include_directories(dwm PUBLIC ${INCS})
 
 set(CPPFLAGS -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L)
 
