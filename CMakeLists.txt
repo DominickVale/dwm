@@ -4,10 +4,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 set(CMAKE_C_COMPILER "cc")
 project(dwm VERSION 6.2 LANGUAGES C)
 
-add_executable(dwm drw.c dwm.c util.c)
-set_target_properties(dwm PROPERTIES C_STANDARD 99)
-target_include_directories(dwm PUBLIC "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
-
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
 else()
@@ -43,6 +39,9 @@ set(INCS
   ${Fontconfig_INCLUDE_DIRS}
 )
 
+add_executable(dwm drw.c dwm.c util.c)
+set_target_properties(dwm PROPERTIES C_STANDARD 99)
+target_include_directories(dwm PUBLIC "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
 target_link_libraries(dwm ${LIBS})
 target_include_directories(dwm PUBLIC ${INCS})
 
