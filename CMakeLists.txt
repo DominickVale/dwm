@@ -18,7 +18,7 @@ endif()
 find_package(X11 REQUIRED COMPONENTS Xinerama Xft xcb)
 find_package(Yajl REQUIRED)
 find_package(Freetype REQUIRED)
-find_package(Xcb REQUIRED COMPONENTS RES) 
+find_package(Xcb REQUIRED COMPONENTS RES)
 find_package(Fontconfig REQUIRED)
 
 set(LIBS
@@ -33,7 +33,7 @@ set(LIBS
   -lxcb
 )
 
-include_directories(
+set(INCS
   ${X11_INCLUDE_DIR}
   ${X11_Xft_INCLUDE_PATH}
   ${X11_X11_xcb_INCLUDE_PATH}
