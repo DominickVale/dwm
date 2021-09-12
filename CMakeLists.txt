@@ -4,7 +4,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 set(CMAKE_C_COMPILER "cc")
 project(dwm VERSION 6.2 LANGUAGES C)
 
-configure_file(config-version.h.in config-version.h)
 add_executable(dwm drw.c dwm.c util.c)
 set_target_properties(dwm PROPERTIES C_STANDARD 99)
 target_include_directories(dwm PUBLIC "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
@@ -47,7 +46,7 @@ set(INCS
 target_link_libraries(dwm ${LIBS})
 target_include_directories(dwm PUBLIC ${INCS})
 
-set(CPPFLAGS -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L)
+set(CPPFLAGS -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -DVERSION="${PROJECT_VERSION}")
 
 target_compile_options(dwm PUBLIC -pedantic -Wall
                         -Wno-deprecated-declarations -Os
