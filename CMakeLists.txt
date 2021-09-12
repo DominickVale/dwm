@@ -49,15 +49,22 @@ target_compile_options(dwm PUBLIC -pedantic -Wall
                         -Wno-deprecated-declarations -Os
                         ${CPPFLAGS})
 
-message(STATUS "VARS: \n
-  PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}
-  X11 libs ${X11_LIBRARIES} dir ${X11_INCLUDE_DIR}\n
-  X11 Xft lib ${X11_Xft_LIB} dir ${X11_Xft_INCLUDE_PATH}\n
-  X11 xcb lib ${X11_X11_xcb_LIB} dir ${X11_X11_xcb_INCLUDE_PATH}\n
-  XCB libs ${Xcb_LIBRARIES} dir ${Xcb_INCLUDE_DIRS}\n
-  XCB-res libs ${Xcb_RES_LIBRARIES} dir ${Xcb_RES_INCLUDE_DIRS}\n
-  yajl libs: ${YAJL_LIBRARY} dirs: ${YAJL_INCLUDE_DIR}, \n
-  freetype libs: ${FREETYPE_LIBRARIES} dirs: ${FREETYPE_INCLUDE_DIRS} \n
-  Fontconfig libs: ${Fontconfig_LIBRARIES} dirs ${Fontconfig_INCLUDE_DIRS} \n
-  CPPFLAGS: ${CPPFLAGS}
-")
+include(CMakePrintHelpers)
+cmake_print_variables(PROJECT_SOURCE_DIR)
+cmake_print_variables(X11_LIBRARIES)
+cmake_print_variables(X11_INCLUDE_DIR)
+cmake_print_variables(X11_Xft_LIB)
+cmake_print_variables(X11_Xft_INCLUDE_PATH)
+cmake_print_variables(X11_X11_xcb_LIB)
+cmake_print_variables(X11_X11_xcb_INCLUDE_PATH)
+cmake_print_variables(Xcb_LIBRARIES)
+cmake_print_variables(Xcb_INCLUDE_DIRS)
+cmake_print_variables(Xcb_RES_LIBRARIES)
+cmake_print_variables(Xcb_RES_INCLUDE_DIRS)
+cmake_print_variables(YAJL_LIBRARY)
+cmake_print_variables(YAJL_INCLUDE_DIR)
+cmake_print_variables(FREETYPE_LIBRARIES)
+cmake_print_variables(FREETYPE_INCLUDE_DIRS)
+cmake_print_variables(Fontconfig_LIBRARIES)
+cmake_print_variables(Fontconfig_INCLUDE_DIRS)
+cmake_print_variables(CPPFLAGS)
