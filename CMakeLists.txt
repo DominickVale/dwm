@@ -33,8 +33,6 @@ set(LIBS
   -lxcb
 )
 
-link_libraries(${LIBS})
-
 include_directories(
   ${X11_INCLUDE_DIR}
   ${X11_Xft_INCLUDE_PATH}
