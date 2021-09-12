@@ -43,9 +43,8 @@ set(CPPFLAGS -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -DVERSION
 
 add_executable(dwm drw.c dwm.c util.c)
 set_target_properties(dwm PROPERTIES C_STANDARD 99)
-target_include_directories(dwm PUBLIC "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
+target_include_directories(dwm PUBLIC "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}" ${INCS})
 target_link_libraries(dwm ${LIBS})
-target_include_directories(dwm PUBLIC ${INCS})
 target_compile_options(dwm PUBLIC -pedantic -Wall
                         -Wno-deprecated-declarations -Os
                         ${CPPFLAGS})
