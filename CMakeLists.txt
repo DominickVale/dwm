@@ -23,7 +23,7 @@ set(LIBS
   ${Xcb_LIBRARIES}
   ${Xcb_RES_LIBRARIES}
   ${YAJL_LIBRARY}
-  ${FREETYPE_LIBRARY}
+  Freetype::Freetype
   Fontconfig::Fontconfig
   -lxcb
 )
@@ -35,7 +35,6 @@ set(INCS
   ${Xcb_INCLUDE_DIRS}
   ${Xcb_RES_INCLUDE_DIRS}
   ${YAJL_INCLUDE_DIRS}
-  ${FREETYPE_INCLUDE_DIRS}
 )
 
 set(CPPFLAGS -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -DVERSION="${PROJECT_VERSION}")
@@ -62,6 +61,4 @@ cmake_print_variables(Xcb_RES_LIBRARIES)
 cmake_print_variables(Xcb_RES_INCLUDE_DIRS)
 cmake_print_variables(YAJL_LIBRARY)
 cmake_print_variables(YAJL_INCLUDE_DIR)
-cmake_print_variables(FREETYPE_LIBRARIES)
-cmake_print_variables(FREETYPE_INCLUDE_DIRS)
 cmake_print_variables(CPPFLAGS)
