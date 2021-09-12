@@ -18,7 +18,7 @@ find_package(Fontconfig REQUIRED)
 
 set(LIBS
   ${X11_LIBRARIES}
-  ${X11_Xft_LIB}
+  X11::Xft
   ${X11_X11_xcb_LIB}
   ${Xcb_LIBRARIES}
   ${Xcb_RES_LIBRARIES}
@@ -30,7 +30,6 @@ set(LIBS
 
 set(INCS
   ${X11_INCLUDE_DIR}
-  ${X11_Xft_INCLUDE_PATH}
   ${X11_X11_xcb_INCLUDE_PATH}
   ${Xcb_INCLUDE_DIRS}
   ${Xcb_RES_INCLUDE_DIRS}
@@ -51,8 +50,6 @@ include(CMakePrintHelpers)
 cmake_print_variables(PROJECT_SOURCE_DIR)
 cmake_print_variables(X11_LIBRARIES)
 cmake_print_variables(X11_INCLUDE_DIR)
-cmake_print_variables(X11_Xft_LIB)
-cmake_print_variables(X11_Xft_INCLUDE_PATH)
 cmake_print_variables(X11_X11_xcb_LIB)
 cmake_print_variables(X11_X11_xcb_INCLUDE_PATH)
 cmake_print_variables(Xcb_LIBRARIES)
