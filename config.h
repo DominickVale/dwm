@@ -1,5 +1,5 @@
 /* See LICENSE file for copyright and license details. */
-#include "config.h.in"
+#include "config-version.h"
 /* Constants */
 #define TERMINAL "st"
 #define TERMCLASS "St"

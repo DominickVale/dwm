@@ -4,7 +4,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 set(CMAKE_C_COMPILER "cc")
 project(dwm VERSION 6.2 LANGUAGES C)
 
-configure_file(config.h.in config.h)
+configure_file(config-version.h.in config-version.h)
 add_executable(dwm drw.c dwm.c util.c)
 set_target_properties(dwm PROPERTIES C_STANDARD 99)
 target_include_directories(dwm PUBLIC "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
