@@ -3,7 +3,7 @@
 /* Constants */
 #define TERMINAL "st"
 #define TERMCLASS "St"
-#define EMULATOR_MAIN_CNAME "Android Emulator - Main:5554" // main android emulator class name
+#define EMULATOR_MAIN_CNAME ".*Emulator.*" // main android emulator class name
 
 /* appearance */
 static unsigned int borderpx  = 3;        /* border pixel of windows */
