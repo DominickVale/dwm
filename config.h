@@ -73,6 +73,8 @@ static const Rule rules[] = {
 	{ "discord",  	     NULL,       NULL,       	    1 << 8,       0,           0,         0,        -1 },
 	{ "Vivaldi-stable",  NULL,       NULL,       	    1 << 0,       0,           0,         0,        -1 },
 	{ "Code",  	     NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
+    { "jetbrains-clion",  	     NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
+    { "jetbrains-webstorm",  	     NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
 	{ TERMCLASS,  	     NULL,       NULL,       	    0,            0,           1,         0,        -1 },
 	{ NULL,      	     NULL,       "Event Tester",    0,            0,           0,         1,        -1 },
 	{ NULL,      	     "spterm",   NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
