@@ -19,19 +19,16 @@ find_package(Fontconfig REQUIRED)
 set(LIBS
   X11::Xft
   ${X11_X11_xcb_LIB}
-  ${Xcb_LIBRARIES}
-  ${Xcb_RES_LIBRARIES}
   ${YAJL_LIBRARY}
+  Xcb::RES
   Freetype::Freetype
   Fontconfig::Fontconfig
-  -lxcb
 )
 
 set(INCS
   ${X11_X11_xcb_INCLUDE_PATH}
-  ${Xcb_INCLUDE_DIRS}
   ${Xcb_RES_INCLUDE_DIRS}
-  ${YAJL_INCLUDE_DIRS}
+  ${YAJL_INCLUDE_DIR}
 )
 
 set(CPPFLAGS -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -DVERSION="${PROJECT_VERSION}")
@@ -48,8 +45,6 @@ include(CMakePrintHelpers)
 cmake_print_variables(PROJECT_SOURCE_DIR)
 cmake_print_variables(X11_X11_xcb_LIB)
 cmake_print_variables(X11_X11_xcb_INCLUDE_PATH)
-cmake_print_variables(Xcb_LIBRARIES)
-cmake_print_variables(Xcb_INCLUDE_DIRS)
 cmake_print_variables(Xcb_RES_LIBRARIES)
 cmake_print_variables(Xcb_RES_INCLUDE_DIRS)
 cmake_print_variables(YAJL_LIBRARY)
