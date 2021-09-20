@@ -8,6 +8,7 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
 else()
   message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+  add_compile_definitions(_DEBUG)
 endif()
  
 find_package(X11 REQUIRED COMPONENTS Xinerama Xft xcb)
