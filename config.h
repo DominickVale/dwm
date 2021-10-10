@@ -3,7 +3,7 @@
 /* Constants */
 #define TERMINAL "st"
 #define TERMCLASS "St"
-#define EMULATOR_MAIN_CNAME "Android Emulator - Main:5554" // main android emulator class name
+#define EMULATOR_MAIN_CNAME ".*Emulator.*" // main android emulator class name
 
 /* appearance */
 static unsigned int borderpx  = 3;        /* border pixel of windows */
@@ -73,6 +73,8 @@ static const Rule rules[] = {
 	{ "discord",  	     NULL,       NULL,       	    1 << 8,       0,           0,         0,        -1 },
 	{ "Vivaldi-stable",  NULL,       NULL,       	    1 << 0,       0,           0,         0,        -1 },
 	{ "Code",  	     NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
+    { "jetbrains-clion",  	     NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
+    { "jetbrains-webstorm",  	     NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
 	{ TERMCLASS,  	     NULL,       NULL,       	    0,            0,           1,         0,        -1 },
 	{ NULL,      	     NULL,       "Event Tester",    0,            0,           0,         1,        -1 },
 	{ NULL,      	     "spterm",   NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
@@ -278,8 +280,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
 	{ MODKEY|ControlMask,		XK_space,	spawn,		SHCMD("sb-kbselect dwm") },
 
-	{ 0,				XK_Print,	spawn,		SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
-	{ ShiftMask,			XK_Print,	spawn,		SHCMD("maimpick") },
+	{ 0,				XK_Print,	spawn,		SHCMD("maimpick") },
+	{ ShiftMask,			XK_Print,	spawn,		SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
 	{ MODKEY,			XK_Print,	spawn,		SHCMD("dmenurecord") },
 	{ MODKEY|ShiftMask,		XK_Print,	spawn,		SHCMD("dmenurecord kill") },
 	{ MODKEY,			XK_Delete,	spawn,		SHCMD("dmenurecord kill") },
