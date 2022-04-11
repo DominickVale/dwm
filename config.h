@@ -19,7 +19,7 @@ static int topbar             = 1;        /* 0 means bottom bar */
 static const double defaultopacity = 0.9;
 
 static char *fonts[]          = {
-	"monospace:size=10",
+	"monospace:size=16",
 	"JoyPixels:pixelsize=10:antialias=true:autohint=true",
 	"font awesome 5 free solid:size=10",
 	"font awesome 5 free brands regular:size=10",
@@ -53,11 +53,13 @@ typedef struct {
 const char *spcmd1[] = {TERMINAL, "-n", "spterm", "-g", "120x34", NULL };
 const char *spcmd2[] = {TERMINAL, "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
 const char *spcmd3[] = {"emulator", "-avd", "Main"};
+const char *spcmd4[] = {TERMINAL, "-n", "spkmag","-g", "50x20", "-e", "kmag", "", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"spterm",      spcmd1},
 	{"spcalc",      spcmd2},
 	{"spemul",      spcmd3},
+	{"spkmag",      spcmd4},
 };
 
 /* tagging */
@@ -72,15 +74,17 @@ static const Rule rules[] = {
 	{ "Gimp",     	     NULL,       NULL,       	    1 << 8,       0,           0,         0,        -1 },
 	{ "discord",  	     NULL,       NULL,       	    1 << 8,       0,           0,         0,        -1 },
 	{ "Vivaldi-stable",  NULL,       NULL,       	    1 << 0,       0,           0,         0,        -1 },
-	{ "Code",  	     NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
-    { "jetbrains-clion",  	     NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
-    { "jetbrains-webstorm",  	     NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
+	{ "Code",  	         NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
+  { "jetbrains-clion", NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
+  { "jetbrains-webstorm",NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
+  { "jetbrains-idea",  NULL,       NULL,       	    1 << 2,       0,           0,         0,        -1 },
 	{ TERMCLASS,  	     NULL,       NULL,       	    0,            0,           1,         0,        -1 },
 	{ NULL,      	     NULL,       "Event Tester",    0,            0,           0,         1,        -1 },
 	{ NULL,      	     "spterm",   NULL,       	    SPTAG(0),     1,           1,         0,        -1 },
 	{ NULL,      	     "spcalc",   NULL,       	    SPTAG(1),     1,           1,         0,        -1 },
-	{ NULL,		     NULL, 	EMULATOR_MAIN_CNAME,SPTAG(2),     1,           0,         0,        -1 },
-	{ NULL,		     NULL, 	"win0",		    0,     	  1,           0,         0,        -1 },
+	{ NULL,      	     "spkmag",   NULL,       	    SPTAG(3),     1,           1,         0,        -1 },
+	{ NULL,		          NULL, 	EMULATOR_MAIN_CNAME,      SPTAG(2),     1,           0,         0,        -1 },
+	{ NULL,		          NULL, 	"win0",		    0,     	  1,           0,         0,        -1 },
 };
 
 /* layout(s) */
@@ -188,12 +192,12 @@ static Key keys[] = {
 	/* { MODKEY|ShiftMask,		XK_Tab,		spawn,		SHCMD("") }, */
 	{ MODKEY,			XK_q,		killclient,	{0} },
 	{ MODKEY|ShiftMask,		XK_q,		spawn,		SHCMD("sysact") },
-	{ MODKEY,			XK_w,		spawn,		SHCMD("$BROWSER") },
+	/* { MODKEY,			XK_w,		spawn,		SHCMD("$BROWSER") }, */
 	{ MODKEY|ShiftMask,		XK_w,		spawn,		SHCMD(TERMINAL " -e sudo nmtui") },
 	{ MODKEY,			XK_e,		spawn,		SHCMD(TERMINAL " -e neomutt ; pkill -RTMIN+12 dwmblocks; rmdir ~/.abook") },
 	{ MODKEY|ShiftMask,		XK_e,		spawn,		SHCMD(TERMINAL " -e abook -C ~/.config/abook/abookrc --datafile ~/.config/abook/addressbook") },
-	{ MODKEY,			XK_r,		spawn,		SHCMD(TERMINAL " -e lf") },
-	{ MODKEY|ShiftMask,		XK_r,		spawn,		SHCMD(TERMINAL " -e htop") },
+	{ MODKEY,			XK_r,		spawn,		SHCMD(TERMINAL " -e lfub") },
+	{ MODKEY|ShiftMask,		XK_r,		spawn,		SHCMD(TERMINAL " -e btop") },
 	{ MODKEY,			XK_t,		setlayout,	{.v = &layouts[0]} }, /* tile */
 	{ MODKEY|ShiftMask,		XK_t,		setlayout,	{.v = &layouts[1]} }, /* bstack */
 	{ MODKEY,			XK_y,		setlayout,	{.v = &layouts[2]} }, /* spiral */
@@ -280,6 +284,7 @@ static Key keys[] = {
 	{ MODKEY,			XK_space,	zoom,		{0} },
 	{ MODKEY|ShiftMask,		XK_space,	togglefloating,	{0} },
 	{ MODKEY|ControlMask,		XK_space,	spawn,		SHCMD("sb-kbselect dwm") },
+	{ MODKEY,		XK_KP_Add,	togglescratch,	{.ui = 3} },
 
 	{ 0,				XK_Print,	spawn,		SHCMD("maimpick") },
 	{ ShiftMask,			XK_Print,	spawn,		SHCMD("maim pic-full-$(date '+%y%m%d-%H%M-%S').png") },
@@ -289,8 +294,8 @@ static Key keys[] = {
 	{ MODKEY,			XK_Scroll_Lock,	spawn,		SHCMD("killall screenkey || screenkey &") },
 
 	{ 0, XF86XK_AudioMute,		spawn,		SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks) && notify-send '🔊: ' -h int:value:`pamixer --get-volume`") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks) && notify-send '🔊: ' -h int:value:`pamixer --get-volume`") },
 	{ 0, XF86XK_AudioPrev,		spawn,		SHCMD("playerctl previous") },
 	{ 0, XF86XK_AudioNext,		spawn,		SHCMD("playerctl next") },
 	{ 0, XF86XK_AudioPause,		spawn,		SHCMD("playerctl pause") },
@@ -314,8 +319,8 @@ static Key keys[] = {
 	{ 0, XF86XK_TouchpadToggle,	spawn,		SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") },
 	{ 0, XF86XK_TouchpadOff,	spawn,		SHCMD("synclient TouchpadOff=1") },
 	{ 0, XF86XK_TouchpadOn,		spawn,		SHCMD("synclient TouchpadOff=0") },
-	{ 0, XF86XK_MonBrightnessUp,	spawn,		SHCMD("xbacklight -inc 15") },
-	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("xbacklight -dec 15") },
+	{ 0, XF86XK_MonBrightnessUp,	spawn,		SHCMD("xbacklight -inc 5 && notify-send '🔆: ' -h int:value:`xbacklight -get`") },
+	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("xbacklight -dec 5 && notify-send '🔆: ' -h int:value:`xbacklight -get`") },
 
 	/* { MODKEY|Mod4Mask,              XK_h,      incrgaps,       {.i = +1 } }, */
 	/* { MODKEY|Mod4Mask,              XK_l,      incrgaps,       {.i = -1 } }, */
